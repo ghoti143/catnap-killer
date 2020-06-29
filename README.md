@@ -1,5 +1,8 @@
 # catnapkiller
 
+## install ionic cli
+`npm install -g @ionic/cli`
+
 ## run locally
 `ionic serve`
 
