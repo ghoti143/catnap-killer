@@ -1,0 +1,7 @@
+{
+  "name": "Catnap Killer",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
