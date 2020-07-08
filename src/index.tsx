@@ -7,38 +7,47 @@ import 'firebase/auth';
 import * as firebaseui from 'firebaseui';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBhw_2csvGj02p5ArVZbQVWV7TFpomRlAs",
-  authDomain: "catnap-killer.firebaseapp.com",
-  databaseURL: "https://catnap-killer.firebaseio.com",
-  projectId: "catnap-killer",
-  storageBucket: "catnap-killer.appspot.com",
-  messagingSenderId: "217085527150",
-  appId: "1:217085527150:web:ebfc61f69e3199d910527f",
-  measurementId: "G-VJ82RZFH4Z"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
 firebase.initializeApp(firebaseConfig);
 
+//firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-ui.start('#firebaseui-auth-container', {
-  signInFlow: 'popup',
-  signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID
-  ],
-  signInSuccessUrl: '/',
-  callbacks: {
-    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-      console.log('foo');
-      ReactDOM.render(<App />, document.getElementById('root'));
-      return false;
-    },
-    uiShown: function() {
-      // The widget is rendered.
-      // Hide the loader.
-    }
-  },
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    ReactDOM.render(<App />, document.getElementById('root'));
+  } else {
+    ui.start('#firebaseui-auth-container', {
+      signInFlow: 'popup',
+      signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+      ],
+      signInSuccessUrl: '/',
+      callbacks: {
+        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+          console.log('foo');
+          ReactDOM.render(<App />, document.getElementById('root'));
+          return false;
+        },
+        uiShown: function() {
+          // The widget is rendered.
+          // Hide the loader.
+        }
+      },
+    });  }
 });
+
+
+
 
 
 // If you want your app to work offline and load faster, you can change

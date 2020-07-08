@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import * as firebase from "firebase/app";
 import {
   IonApp,
   IonIcon,
@@ -34,7 +35,11 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+
+  const signOut = (event: React.MouseEvent) => firebase.auth().signOut();
+
+  return (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
@@ -57,10 +62,15 @@ const App: React.FC = () => (
             <IonIcon icon={square} />
             <IonLabel>Tab 3</IonLabel>
           </IonTabButton>
+          <IonTabButton tab="tab4" onClick={signOut}>
+            <IonIcon icon={square} />
+            <IonLabel>Sign Out</IonLabel>
+          </IonTabButton>
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
   </IonApp>
-);
+  );
+}
 
 export default App;
