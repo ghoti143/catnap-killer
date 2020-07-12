@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import * as firebase from "firebase/app";
 import {
   IonApp,
   IonIcon,
@@ -16,6 +15,7 @@ import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 import Login from './pages/Login';
+import Logout from './pages/Logout';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -42,7 +42,6 @@ interface PropsInterface {
 
 const App: React.FC<PropsInterface> = (props: PropsInterface) => {
 
-  const signOut = (event: React.MouseEvent) => firebase.auth().signOut();
   const loggedIn = props.loggedIn;
 
   return (
@@ -54,6 +53,7 @@ const App: React.FC<PropsInterface> = (props: PropsInterface) => {
           <Route path="/tab2" component={Tab2} exact={true} />
           <Route path="/tab3" component={Tab3} />
           <Route path="/login" component={Login} />
+          <Route path="/logout" component={Logout} />
           <Route path="/" render={() => {
             if(loggedIn) {
               return <Redirect to="/tab1" />
@@ -75,7 +75,7 @@ const App: React.FC<PropsInterface> = (props: PropsInterface) => {
             <IonIcon icon={square} />
             <IonLabel>Tab 3</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab4" onClick={signOut}>
+          <IonTabButton tab="tab4" href="/logout">
             <IonIcon icon={square} />
             <IonLabel>Sign Out</IonLabel>
           </IonTabButton>
