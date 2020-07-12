@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import * as firebase from "firebase/app";
-import 'firebase/auth';
-import * as firebaseui from 'firebaseui';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -19,36 +17,10 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-//firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-var ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    ReactDOM.render(<App />, document.getElementById('root'));
-  } else {
-    ui.start('#firebaseui-auth-container', {
-      signInFlow: 'popup',
-      signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID
-      ],
-      signInSuccessUrl: '/',
-      callbacks: {
-        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-          console.log('foo');
-          ReactDOM.render(<App />, document.getElementById('root'));
-          return false;
-        },
-        uiShown: function() {
-          // The widget is rendered.
-          // Hide the loader.
-        }
-      },
-    });  }
+firebase.auth().onAuthStateChanged(user => {
+  const loggedIn = !!user;
+  ReactDOM.render(<App loggedIn={loggedIn} />, document.getElementById('root'));  
 });
-
-
-
-
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
