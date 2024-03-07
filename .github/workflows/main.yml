@@ -17,4 +17,4 @@ jobs:
           monday-token: ${{ secrets.MONDAY_TOKEN }}
           text: ${{ github.event.pull_request.title }}
           status-column-title: 'Status'
-          status: 'Working on it'
+          set-status: 'Working on it'
