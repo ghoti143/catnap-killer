@@ -1,0 +1,20 @@
+on:
+  pull_request:
+    branches: [master, main]
+    
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+          
+      - name: Use Github Action to set Status of item on monday.com
+        uses: polygon-software/action-monday-state@main
+        with:
+          monday-token: ${{ secrets.MONDAY_TOKEN }}
+          text: ${{ github.event.pull_request.title }}
+          status-column-title: 'Status'
+          status: 'Working on it'
