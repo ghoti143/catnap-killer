@@ -38,4 +38,4 @@ jobs:
           monday-token: ${{ secrets.MONDAY_TOKEN }}
           text: ${{ github.event.pull_request.title }}
           status-column-title: 'Foo'
-          set-status: '$GITHUB_ENV'
+          set-status: 'sadasdf'
