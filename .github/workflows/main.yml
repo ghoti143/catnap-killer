@@ -15,6 +15,8 @@ jobs:
         run: |
           numAdditions="$(gh api repos/$OWNER/$REPO/pulls/$PR_NUMBER --jq '.additions')"
           echo 'NUM_ADDITIONS='$numAdditions >> $GITHUB_ENV
+          numDeletions="$(gh api repos/$OWNER/$REPO/pulls/$PR_NUMBER --jq '.deletions')"
+          echo 'NUM_DELETIONS='$numDeletions >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
@@ -22,12 +24,22 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
 
       - name: Log api results
-        run: echo "additions $NUM_ADDITIONS"
+        run: |
+          echo "additions $NUM_ADDITIONS"
+          echo "deletions $NUM_DELETIONS"
           
-      - name: Use Github Action to set Status of item on monday.com
+      - name: Use Github Action to set Additions column of item on monday.com
         uses: ghoti143/action-monday-state@main
         with:
           monday-token: ${{ secrets.MONDAY_TOKEN }}
           text: ${{ github.event.pull_request.title }}
           status-column-title: 'Additions'
           set-status: ${{ env.NUM_ADDITIONS }}
+
+      - name: Use Github Action to set Deletions column of item on monday.com
+        uses: ghoti143/action-monday-state@main
+        with:
+          monday-token: ${{ secrets.MONDAY_TOKEN }}
+          text: ${{ github.event.pull_request.title }}
+          status-column-title: 'Deletions'
+          set-status: ${{ env.NUM_DELETIONS }}
