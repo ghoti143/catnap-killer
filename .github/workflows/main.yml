@@ -38,4 +38,4 @@ jobs:
           monday-token: ${{ secrets.MONDAY_TOKEN }}
           text: ${{ github.event.pull_request.title }}
           status-column-title: 'Foo'
-          set-status: '$NUM_OPEN_ISSUES'
+          set-status: "$NUM_OPEN_ISSUES"
