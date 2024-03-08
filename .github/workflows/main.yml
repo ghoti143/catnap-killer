@@ -10,6 +10,27 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
+
+      - name: query GH api  
+        run: |
+          numOpenIssues="$(gh api graphql -F owner=$OWNER -F name=$REPO -f query='
+            query($name: String!, $owner: String!) {
+              repository(owner: $owner, name: $name) {
+                issues(states:OPEN){
+                  totalCount
+                }
+              }
+            }
+          ' --jq '.data.repository.issues.totalCount')"
+
+          echo 'NUM_OPEN_ISSUES='$numOpenIssues >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+
+      - name: Log api result
+        run: echo "$GITHUB_ENV"
           
       - name: Use Github Action to set Status of item on monday.com
         uses: ghoti143/action-monday-state@main
