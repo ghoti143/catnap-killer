@@ -30,12 +30,12 @@ jobs:
           REPO: ${{ github.event.repository.name }}
 
       - name: Log api result
-        run: echo "$GITHUB_ENV"
+        run: echo "hello world $GITHUB_ENV"
           
       - name: Use Github Action to set Status of item on monday.com
         uses: ghoti143/action-monday-state@main
         with:
           monday-token: ${{ secrets.MONDAY_TOKEN }}
           text: ${{ github.event.pull_request.title }}
-          status-column-title: 'Status'
-          set-status: 'Working on it'
+          status-column-title: 'Foo'
+          set-status: '$GITHUB_ENV'
